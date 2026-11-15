@@ -1,6 +1,6 @@
 services:
   board:
-    build: ghcr.io/opariffazman/ship-dashboard-v2:latest
+    image: ghcr.io/sityhelimi-arch/ship-dashboard:latest
     ports:
       - "80:3000"
     environment:

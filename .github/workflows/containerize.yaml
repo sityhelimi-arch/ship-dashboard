@@ -28,3 +28,24 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
+
+  deploy:
+    needs: build-push
+    runs-on: self-hosted
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Sync compose.yaml and deploy latest container on EC2
+        working-directory: /home/ssm-user/ship-dashboard
+        run: |
+          cat << 'COMPOSE_EOF' > compose.yaml
+          services:
+            board:
+              image: ghcr.io/sityhelimi-arch/ship-dashboard:latest
+              ports:
+                - "80:3000"
+              environment:
+                SHIPIT_TOKEN: infratify
+COMPOSE_EOF
+          docker compose pull
+          docker compose up -d
+          docker image prune -f
