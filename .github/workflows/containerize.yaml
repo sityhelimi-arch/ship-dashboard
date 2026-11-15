@@ -37,15 +37,7 @@ jobs:
       - name: Sync compose.yaml and deploy latest container on EC2
         working-directory: /home/ssm-user/ship-dashboard
         run: |
-          cat << 'COMPOSE_EOF' > compose.yaml
-          services:
-            board:
-              image: ghcr.io/sityhelimi-arch/ship-dashboard:latest
-              ports:
-                - "80:3000"
-              environment:
-                SHIPIT_TOKEN: infratify
-COMPOSE_EOF
+          printf 'services:\n  board:\n    image: ghcr.io/sityhelimi-arch/ship-dashboard:latest\n    ports:\n      - "80:3000"\n    environment:\n      SHIPIT_TOKEN: infratify\n' > compose.yaml
           docker compose pull
           docker compose up -d
           docker image prune -f
