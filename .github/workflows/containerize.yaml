@@ -1,5 +1,9 @@
 name: containerize
 on: [push]
+
+permissions:
+  packages: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
